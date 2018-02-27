@@ -1505,12 +1505,12 @@
             }
             function deserializeResponse(response) {
                 return response.text().then(function(text) {
-                    var options = {
+                    text = text || null;
+                    return new window.Response(text, {
                         status: response.status,
+                        statusText: response.statusText,
                         headers: deserializeHeaders(response.headers)
-                    };
-                    response.statusText && (options.statusText = response.statusText);
-                    return new window.Response(text, options);
+                    });
                 });
             }
             function fetch_fetch(win, url) {
