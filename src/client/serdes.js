@@ -23,10 +23,15 @@ export function serializeRequest(options : ?FetchOptionsType) : SerializedReques
 
 export function deserializeResponse(response : SerializedResponseType) : ZalgoPromise<Response> {
     return response.text().then(text => {
-        return new window.Response(text, {
+        const options = {
             status:     response.status,
-            statusText: response.statusText,
             headers:    deserializeHeaders(response.headers)
-        });
+        };
+
+        if (response.statusText) {
+            options.statusText = response.statusText;
+        }
+
+        return new window.Response(text, options);
     });
 }
